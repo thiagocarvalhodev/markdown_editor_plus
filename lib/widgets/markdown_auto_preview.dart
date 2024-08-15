@@ -30,6 +30,7 @@ class MarkdownAutoPreview extends StatefulWidget {
     this.expands = false,
     this.decoration = const InputDecoration(isDense: true),
     this.hintText,
+    this.iconColor,
   });
 
   /// Markdown syntax to reset the field to
@@ -181,6 +182,9 @@ class MarkdownAutoPreview extends StatefulWidget {
   /// Defaults to false.
   final bool expands;
 
+  /// The color of the icon on the toolbar
+  final Color? iconColor;
+
   @override
   State<MarkdownAutoPreview> createState() => _MarkdownAutoPreviewState();
 }
@@ -276,6 +280,7 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
                   data: _internalController.text == ""
                       ? widget.hintText ?? "_Markdown text_"
                       : _internalController.text,
+                  styleSheet: MarkdownStyleSheet(),
                 ),
               ),
             ),
@@ -285,38 +290,48 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
   Widget _editorOnFocused() {
     return !widget.enableToolBar
         ? _editor()
-        : Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _editor(),
+        : LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              // The available width and height
+              final availableHeight = constraints.maxHeight;
 
-              // show toolbar
-              if (!widget.readOnly)
-                MarkdownToolbar(
-                  markdownSyntax: widget.markdownSyntax,
-                  // key: const ValueKey<String>("zmarkdowntoolbar"),
-                  controller: _internalController,
-                  autoCloseAfterSelectEmoji: widget.autoCloseAfterSelectEmoji,
-                  toolbar: _toolbar,
-                  onPreviewChanged: () {
-                    // Remove focus first
-                    _internalFocus.unfocus();
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Use the available space to determine the height of the editor
+                  Expanded(
+                    child: SizedBox(
+                      height: availableHeight,
+                      child: _editor(),
+                    ),
+                  ),
 
-                    // Then remove widget from widget tree
-                    setState(() {
-                      _focused = !_focused;
-                    });
-                  },
-                  unfocus: () {
-                    _internalFocus.unfocus();
-                  },
-                  showEmojiSelection: widget.showEmojiSelection,
-                  emojiConvert: widget.emojiConvert,
-                  toolbarBackground: widget.toolbarBackground,
-                  expandableBackground: widget.expandableBackground,
-                )
-            ],
+                  // Show toolbar below the editor
+                  if (!widget.readOnly)
+                    MarkdownToolbar(
+                      markdownSyntax: widget.markdownSyntax,
+                      controller: _internalController,
+                      autoCloseAfterSelectEmoji:
+                          widget.autoCloseAfterSelectEmoji,
+                      toolbar: _toolbar,
+                      iconColor: widget.iconColor,
+                      onPreviewChanged: () {
+                        _internalFocus.unfocus();
+                        setState(() {
+                          _focused = !_focused;
+                        });
+                      },
+                      unfocus: () {
+                        _internalFocus.unfocus();
+                      },
+                      showEmojiSelection: widget.showEmojiSelection,
+                      emojiConvert: widget.emojiConvert,
+                      toolbarBackground: widget.toolbarBackground,
+                      expandableBackground: widget.expandableBackground,
+                    ),
+                ],
+              );
+            },
           );
   }
 

@@ -34,21 +34,17 @@ class _HomeScreenState extends State<HomeScreen> {
       body: const Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          MarkdownAutoPreview(
-            decoration: InputDecoration(
-              hintText: 'Markdown Auto Preview',
+          Expanded(
+            child: MarkdownAutoPreview(
+              decoration: InputDecoration(
+                hintText: 'Markdown Auto Preview',
+              ),
+              emojiConvert: true,
+              // maxLines: 10,
+              // minLines: 1,
+              expands: true,
+              iconColor: Colors.green,
             ),
-            emojiConvert: true,
-            // maxLines: 10,
-            // minLines: 1,
-            // expands: true,
-          ),
-          SplittedMarkdownFormField(
-            markdownSyntax: '## Headline',
-            decoration: InputDecoration(
-              hintText: 'Splitted Markdown FormField',
-            ),
-            emojiConvert: true,
           ),
         ],
       ),

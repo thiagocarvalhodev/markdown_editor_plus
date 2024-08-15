@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../src/toolbar.dart';
-import 'modal_select_emoji.dart';
 import 'modal_input_url.dart';
+import 'modal_select_emoji.dart';
 import 'toolbar_item.dart';
 
 class MarkdownToolbar extends StatelessWidget {
@@ -19,6 +20,7 @@ class MarkdownToolbar extends StatelessWidget {
   final bool showEmojiSelection;
   final VoidCallback? onActionCompleted;
   final String? markdownSyntax;
+  final Color? iconColor;
 
   const MarkdownToolbar({
     super.key,
@@ -34,6 +36,7 @@ class MarkdownToolbar extends StatelessWidget {
     this.onActionCompleted,
     this.showPreviewButton = true,
     this.showEmojiSelection = true,
+    this.iconColor,
   });
 
   @override
@@ -53,6 +56,7 @@ class MarkdownToolbar extends StatelessWidget {
                 icon: FontAwesomeIcons.eye,
                 onPressedButton: onPreviewChanged,
                 tooltip: 'Show/Hide markdown preview',
+                iconColor: iconColor,
               ),
 
             // Clear the field
@@ -64,6 +68,7 @@ class MarkdownToolbar extends StatelessWidget {
                 onActionCompleted?.call();
               },
               tooltip: 'Clear the text field',
+              iconColor: iconColor,
             ),
 
             // Reset the text field
@@ -77,6 +82,7 @@ class MarkdownToolbar extends StatelessWidget {
                 }
               },
               tooltip: 'Reset the text field to specified format',
+              iconColor: iconColor,
             ),
 
             // select single line
@@ -88,6 +94,7 @@ class MarkdownToolbar extends StatelessWidget {
                 onActionCompleted?.call();
               },
               tooltip: 'Select single line',
+              iconColor: iconColor,
             ),
             // bold
             ToolbarItem(
@@ -98,6 +105,7 @@ class MarkdownToolbar extends StatelessWidget {
                 toolbar.action("**", "**");
                 onActionCompleted?.call();
               },
+              iconColor: iconColor,
             ),
             // italic
             ToolbarItem(
@@ -108,6 +116,7 @@ class MarkdownToolbar extends StatelessWidget {
                 toolbar.action("_", "_");
                 onActionCompleted?.call();
               },
+              iconColor: iconColor,
             ),
             // strikethrough
             ToolbarItem(
@@ -118,6 +127,7 @@ class MarkdownToolbar extends StatelessWidget {
                 toolbar.action("~~", "~~");
                 onActionCompleted?.call();
               },
+              iconColor: iconColor,
             ),
             // heading
             ToolbarItem(
@@ -126,6 +136,7 @@ class MarkdownToolbar extends StatelessWidget {
               isExpandable: true,
               tooltip: 'Insert Heading',
               expandableBackground: expandableBackground,
+              iconColor: iconColor,
               items: [
                 ToolbarItem(
                   key: const ValueKey<String>("h1"),
@@ -135,6 +146,7 @@ class MarkdownToolbar extends StatelessWidget {
                     toolbar.action("# ", "");
                     onActionCompleted?.call();
                   },
+                  iconColor: iconColor,
                 ),
                 ToolbarItem(
                   key: const ValueKey<String>("h2"),
@@ -144,6 +156,7 @@ class MarkdownToolbar extends StatelessWidget {
                     toolbar.action("## ", "");
                     onActionCompleted?.call();
                   },
+                  iconColor: iconColor,
                 ),
                 ToolbarItem(
                   key: const ValueKey<String>("h3"),
@@ -153,6 +166,7 @@ class MarkdownToolbar extends StatelessWidget {
                     toolbar.action("### ", "");
                     onActionCompleted?.call();
                   },
+                  iconColor: iconColor,
                 ),
                 ToolbarItem(
                   key: const ValueKey<String>("h4"),
@@ -162,6 +176,7 @@ class MarkdownToolbar extends StatelessWidget {
                     toolbar.action("#### ", "");
                     onActionCompleted?.call();
                   },
+                  iconColor: iconColor,
                 ),
                 // Heading 5 onwards has same font
               ],
@@ -175,6 +190,7 @@ class MarkdownToolbar extends StatelessWidget {
                 toolbar.action("* ", "");
                 onActionCompleted?.call();
               },
+              iconColor: iconColor,
             ),
             // checkbox list
             ToolbarItem(
@@ -191,6 +207,7 @@ class MarkdownToolbar extends StatelessWidget {
                     toolbar.action("- [x] ", "");
                     onActionCompleted?.call();
                   },
+                  iconColor: iconColor,
                 ),
                 ToolbarItem(
                   key: const ValueKey<String>("uncheckbox"),
@@ -200,8 +217,10 @@ class MarkdownToolbar extends StatelessWidget {
                     toolbar.action("- [ ] ", "");
                     onActionCompleted?.call();
                   },
+                  iconColor: iconColor,
                 )
               ],
+              iconColor: iconColor,
             ),
             // emoji
             if (showEmojiSelection)
@@ -212,6 +231,7 @@ class MarkdownToolbar extends StatelessWidget {
                 onPressedButton: () async {
                   await _showModalSelectEmoji(context, controller.selection);
                 },
+                iconColor: iconColor,
               ),
             // link
             ToolbarItem(
@@ -228,6 +248,7 @@ class MarkdownToolbar extends StatelessWidget {
 
                 onActionCompleted?.call();
               },
+              iconColor: iconColor,
             ),
             // image
             ToolbarItem(
@@ -247,6 +268,7 @@ class MarkdownToolbar extends StatelessWidget {
 
                 onActionCompleted?.call();
               },
+              iconColor: iconColor,
             ),
             // blockquote
             ToolbarItem(
@@ -257,6 +279,7 @@ class MarkdownToolbar extends StatelessWidget {
                 toolbar.action("> ", "");
                 onActionCompleted?.call();
               },
+              iconColor: iconColor,
             ),
             // code
             ToolbarItem(
@@ -267,6 +290,7 @@ class MarkdownToolbar extends StatelessWidget {
                 toolbar.action("`", "`");
                 onActionCompleted?.call();
               },
+              iconColor: iconColor,
             ),
             // line
             ToolbarItem(
@@ -277,6 +301,7 @@ class MarkdownToolbar extends StatelessWidget {
                 toolbar.action("\n___\n", "");
                 onActionCompleted?.call();
               },
+              iconColor: iconColor,
             ),
           ],
         ),
